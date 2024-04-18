@@ -1,13 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosNoAuth } from "../../../../config/axios.config";
+import { axiosAuth } from "../../../../config/axios.config";
 
 export type AuthData = {
   username: string;
   password: string;
 };
 
-export const authThunk = createAsyncThunk("auth/login", async (authData: AuthData, { rejectWithValue }) => {
-  const res = await axiosNoAuth
+export const authLoginThunk = createAsyncThunk("auth/login", async (authData: AuthData, { rejectWithValue }) => {
+  const res = await axiosAuth
     .post("/auth/login", authData)
     .then((res) => res.data)
     .catch((err) => err.response.data);

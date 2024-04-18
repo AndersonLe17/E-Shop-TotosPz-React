@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import type { PayloadAction } from "@reduxjs/toolkit";
-import { authThunk } from "./thunk/authThunk";
+import { authLoginThunk } from "./thunk/auth.thunk";
+import { expirationTokenAuth, tokenDecode } from "../../../utils/decode.util";
+import { JWTBackend } from "../../../interfaces/auth/auth.interface";
+import { getCookie } from "../../../utils/cookie.util";
 
 export type AuthState = {
   isAuth: boolean;
@@ -13,16 +16,24 @@ export type AuthState = {
     usuPerf: string;
   } | null;
   token: string | null;
-  exp: number | null;
+  isExp: boolean;
 };
 
 const initialState: AuthState = {
-  isAuth: false,
+  isAuth: getCookie("token") !== undefined ? !expirationTokenAuth(getCookie("token")!) : false,
   errorMsg: null,
   isLoading: false,
-  userData: null,
-  token: null,
-  exp: null,
+  userData:
+    getCookie("token") !== undefined
+      ? {
+          usuCod: tokenDecode<JWTBackend>(getCookie("token")!).usuCod,
+          usuNom: tokenDecode<JWTBackend>(getCookie("token")!).sub,
+          usuCorEle: tokenDecode<JWTBackend>(getCookie("token")!).usuCorEle,
+          usuPerf: tokenDecode<JWTBackend>(getCookie("token")!).usuCorEle,
+        }
+      : null,
+  token: getCookie("token") !== undefined ? getCookie("token")! : null,
+  isExp: getCookie("token") !== undefined ? expirationTokenAuth(getCookie("token")!) : false,
 };
 
 export const authSlice = createSlice({
@@ -30,10 +41,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(authThunk.pending, (state) => {
+    builder.addCase(authLoginThunk.pending, (state) => {
       return (state = { ...initialState, isLoading: true });
     });
-    builder.addCase(authThunk.fulfilled, (state, action) => {
+    builder.addCase(authLoginThunk.fulfilled, (state, action) => {
       return (state = {
         ...initialState,
         isLoading: false,
@@ -45,10 +56,10 @@ export const authSlice = createSlice({
           usuPerf: action.payload.usuPerf.perfNom,
         },
         token: action.payload.token,
-        exp: action.payload.exp,
+        isExp: false,
       });
     });
-    builder.addCase(authThunk.rejected, (state, action) => {
+    builder.addCase(authLoginThunk.rejected, (state, action) => {
       return (state = { ...initialState, errorMsg: action.payload as string });
     });
   },

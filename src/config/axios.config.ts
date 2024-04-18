@@ -1,38 +1,15 @@
-import axios, { HttpStatusCode } from "axios";
+import axios from "axios";
 
 // URL base
 const BASE_URL = "http://localhost:8080/";
-
-// Instancia sin autorización
-const axiosNoAuth = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-// Interceptor para guardar el token en localStorage
-axiosNoAuth.interceptors.response.use(
-  (response) => {
-    if (response.status === HttpStatusCode.Ok) {
-      localStorage.setItem("jwt", response.data.payload.token);
-    }
-    return response;
-  },
-  (error) => {
-    if (error.response?.status === HttpStatusCode.Unauthorized) {
-      localStorage.removeItem("jwt");
-    }
-    return Promise.reject(error);
-  },
-);
 
 // Instancia con autorización
 const axiosAuth = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+    "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 // Instancia para multipart/form-data
@@ -44,4 +21,4 @@ const axiosFormData = axios.create({
   },
 });
 
-export { axiosNoAuth, axiosAuth, axiosFormData };
+export { axiosAuth, axiosFormData };

@@ -61,13 +61,12 @@ export default {
         totos: "url('/src/assets/img/banner_pizza.jpeg')",
       },
       boxShadow: {
-        totos:
-          "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 4px 0px rgba(9, 8, 66, 0.08)",
+        totos: "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 4px 0px rgba(9, 8, 66, 0.08)",
       },
     },
     fontFamily: {
       inter: ["Inter", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: []
 };
