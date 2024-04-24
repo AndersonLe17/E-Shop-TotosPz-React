@@ -14,6 +14,10 @@ export const authLoginThunk = createAsyncThunk("auth/login", async (authData: Au
   if (res.code === 401) {
     return rejectWithValue(res.errors[0].msg);
   }
-  const { token, usuCod, usuNom, usuCorEle, usuPerf, exp } = res.payload;
-  return { token, usuCod, usuNom, usuCorEle, usuPerf, exp };
+  const { token, usuCod, usuNom, usuPerNom, usuCorEle, usuPerf, exp } = res.payload;
+  return { token, usuCod, usuNom, usuPerNom, usuCorEle, usuPerf, exp };
+});
+
+export const authLogoutThunk = createAsyncThunk("auth/logout", async () => {
+  axiosAuth.post("/auth/logout");
 });

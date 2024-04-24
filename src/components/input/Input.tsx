@@ -1,13 +1,8 @@
-type Props = {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  placeholder: string;
-  type?: string;
-  name: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
-const Input = ({ label, placeholder, type = "text", name, value = "", onChange }: Props) => {
+const Input = ({ label, placeholder, type, name, value, onChange }: InputProps) => {
   return (
     <div className="flex rounded-lg bg-white px-3 py-[6px]">
       <label className="block w-full font-inter text-[11px] font-semibold uppercase">

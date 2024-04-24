@@ -3,19 +3,18 @@ import { RootState } from "../redux/store";
 import { LoginForm } from "../components/form";
 import { useAppSelector } from "../redux/hook";
 import { Navigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { IconLoader3 } from "@tabler/icons-react";
 
 export const Login = () => {
   const { isAuth, isLoading } = useAppSelector((state: RootState) => state.auth);
 
   return isAuth ? (
-    <Navigate to={"/"} replace />
+    <Navigate to={"/dashboard"} replace />
   ) : (
-    <main className={`flex h-screen w-screen`}>
+    <main className="flex h-screen w-screen">
       {isLoading && (
         <div className="absolute flex h-screen w-screen justify-center bg-[#00000080]">
-          <FontAwesomeIcon className="self-center text-white" icon={faSpinner} size="3x" spin />
+          <IconLoader3 color="white" size={52} className="animate-spin self-center" />
         </div>
       )}
       <div className="hidden h-screen bg-totos bg-cover bg-center sm:flex md:w-1/2 xl:w-2/3"></div>

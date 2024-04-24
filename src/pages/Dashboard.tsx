@@ -1,20 +1,25 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../redux/hook";
 import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { Sidebar } from "../components/sidebar";
 
 export const Dashboard = () => {
   const [, setCookie, remove] = useCookies();
   const { isAuth, token, isExp } = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => (token ? setCookie("token", token, { path: "/" }) : () => {}), [token]);
-  useEffect(() => {
-    if (isExp) {
-      remove("token");
-      remove("jwt");
-    }
-  }, [isExp]);
+  useEffect(() => (isExp ? remove("token") : () => {}), [isExp]);
 
-  return isAuth ? <div>Dashboard</div> : <Navigate to={"/login"} replace />;
+  return isAuth ? (
+    <main className="flex h-screen w-screen bg-[#EFF3F3]">
+      <Sidebar />
+      <div className="w-full ">
+        <Outlet />
+      </div>
+    </main>
+  ) : (
+    <Navigate to={"/login"} replace />
+  );
 };

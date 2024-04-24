@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Var
 
 const Button = ({ children, className, variant, ...props }: ButtonProps) => {
   return (
-    <button {...props} className={cn("flex rounded-lg px-4 py-2 text-center shadow-totos", buttonVariants({ variant }), className)}>
+    <button {...props} className={cn("flex rounded-lg px-4 py-2 text-center shadow-totos transition ease-in", buttonVariants({ variant }), className)}>
       <div
         className={cn(`w-full text-center font-inter text-base text-light`, {
           "text-dark": variant === "light",
