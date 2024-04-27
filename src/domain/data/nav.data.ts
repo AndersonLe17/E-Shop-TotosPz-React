@@ -1,6 +1,6 @@
 import { NavEnum } from "../enums/nav.enum";
 import { RoleEnum } from "../enums/role.enum";
-import { NavItem } from "../interfaces/nav/nav.interface";
+import { NavItem } from "../interfaces/sidebar/nav/nav.interface";
 import { IconBell, IconBookmarks, IconBox, IconBuildingStore, IconIdBadge, IconLayoutGrid, IconReceipt, IconUserCog, IconWalk } from "@tabler/icons-react";
 
 export const navData: Array<NavItem> = [

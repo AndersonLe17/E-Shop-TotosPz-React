@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import type { PayloadAction } from "@reduxjs/toolkit";
-import { authLoginThunk, authLogoutThunk } from "./thunk/auth.thunk";
+import { authLoginThunk, authLogoutThunk } from "../../thunk/auth.thunk";
 import { expirationTokenAuth, tokenDecode } from "../../../utils/decode.util";
 import { JWTBackend } from "../../../domain/interfaces/auth/auth.interface";
 import { getCookie } from "../../../utils/cookie.util";

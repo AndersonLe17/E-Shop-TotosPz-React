@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { SubNavItem } from "../../domain/interfaces/nav/nav.interface";
+import { SubNavItem } from "../../domain/interfaces/sidebar/nav/nav.interface";
 import { cn } from "../../config/clsx.config";
 
 interface SubItemProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -9,11 +9,12 @@ interface SubItemProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const NavSubItem = ({ subData, basePath }: SubItemProps) => {
   const { title, path } = subData;
-
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const clickItemHandler = async () => navigate(basePath + path);
+  const clickItemHandler = async () => {
+    navigate(basePath + path)
+  };
 
   return (
     <div

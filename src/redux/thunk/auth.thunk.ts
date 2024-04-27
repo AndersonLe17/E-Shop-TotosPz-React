@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosAuth } from "../../../../config/axios.config";
+import { axiosAuth } from "../../config/axios.config";
 
 export type AuthData = {
   username: string;

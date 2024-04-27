@@ -63,10 +63,24 @@ export default {
       boxShadow: {
         totos: "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 4px 0px rgba(9, 8, 66, 0.08)",
       },
+      keyframes: {
+        growin: {
+          "0%": { transform: "scale(.9)", opacity: 0 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        slice: {
+          "0%": { transform: "translate(0, -2.5rem)", opacity: 0 },
+          "100%": { transform: "translate(0, 0.5rem)", opacity: 1 },
+        },
+      },
+      animation: {
+        growin: "growin 0.2s ease-in-out",
+        slice: "slice 0.2s ease-in-out",
+      },
     },
     fontFamily: {
       inter: ["Inter", "sans-serif"],
     },
   },
-  plugins: []
+  plugins: [],
 };

@@ -2,7 +2,7 @@ import { Input } from "../input";
 import { Link } from "react-router-dom";
 import { Button } from "../button";
 import { useState } from "react";
-import { AuthData, authLoginThunk } from "../../redux/features/auth/thunk/auth.thunk";
+import { AuthData, authLoginThunk } from "../../redux/thunk/auth.thunk";
 import { RootState } from "../../redux/store";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 

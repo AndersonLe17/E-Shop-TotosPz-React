@@ -3,7 +3,7 @@ import { Card } from "../card";
 import { Button } from "../button";
 import { useAppDispatch } from "../../redux/hook";
 import { logoutConfirmation } from "../../redux/features/auth/auth.slice";
-import { authLogoutThunk } from "../../redux/features/auth/thunk/auth.thunk";
+import { authLogoutThunk } from "../../redux/thunk/auth.thunk";
 import { useCookies } from "react-cookie";
 
 const ModalLogout = () => {
@@ -18,7 +18,7 @@ const ModalLogout = () => {
 
   return (
     <div className="absolute flex h-screen w-screen justify-center bg-[#00000080]">
-      <Card className="w-2/6">
+      <Card className="w-1/3">
         <div className="flex flex-col content-center gap-y-3 text-center">
           <span className="mx-auto rounded-full bg-danger-200 p-2">
             <IconAlertOctagonFilled className="text-danger" />
