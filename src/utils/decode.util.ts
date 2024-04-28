@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
-import { Settings, DateTime } from "luxon";
 import { JWTBackend } from "../domain/interfaces/auth/auth.interface";
+import moment from "moment-timezone";
 
 export const tokenDecode = <T>(token: string): T => {
   const createDecode: T = jwtDecode(token);
@@ -8,9 +8,9 @@ export const tokenDecode = <T>(token: string): T => {
 };
 
 export const expirationTokenAuth = (token: string): boolean => {
-  Settings.defaultZone = "America/Lima";
-  Settings.defaultLocale = "es";
+  moment.tz.setDefault("America/Lima");
+  moment.locale("es");
   const { exp } = tokenDecode<JWTBackend>(token);
 
-  return exp <= DateTime.now().toUnixInteger();
+  return exp <= moment().unix();
 };

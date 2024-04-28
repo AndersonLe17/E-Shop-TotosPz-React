@@ -13,11 +13,9 @@ export const Dashboard = () => {
   useEffect(() => (isExp ? remove("token") : () => {}), [isExp]);
 
   return isAuth ? (
-    <main className="flex h-screen w-screen bg-[#EFF3F3]">
+    <main className="flex h-screen w-screen bg-light">
       <Sidebar />
-      <div className="w-full ">
-        <Outlet />
-      </div>
+      <Outlet />
     </main>
   ) : (
     <Navigate to={"/login"} replace />

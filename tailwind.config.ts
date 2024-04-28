@@ -1,3 +1,5 @@
+import { title } from "process";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -62,6 +64,7 @@ export default {
       },
       boxShadow: {
         totos: "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 4px 0px rgba(9, 8, 66, 0.08)",
+        title: "0px 4px 4px -4px rgba(0, 0, 0, 0.25), 0px 2px 4px -4px rgba(9, 8, 66, 0.08)",
       },
       keyframes: {
         growin: {
