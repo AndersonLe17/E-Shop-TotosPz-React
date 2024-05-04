@@ -45,7 +45,7 @@ export const navData: Array<NavItem> = [
       {
         subKey: "nav-4-2",
         title: NavEnum.PRODUCTOS,
-        path: "/platillos",
+        path: "/productos",
         roles: [RoleEnum.ROLE_ADMINISTRADOR],
       },
     ],

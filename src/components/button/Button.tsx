@@ -1,15 +1,15 @@
 import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "../../config/clsx.config";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof colorVariants> {
   children?: React.ReactNode;
 }
 
 const Button = ({ children, className, variant, ...props }: ButtonProps) => {
   return (
-    <button {...props} className={cn("flex rounded-lg px-4 py-2 text-center shadow-totos transition ease-in", buttonVariants({ variant }), className)}>
+    <button {...props} className={cn("rounded-lg px-4 py-2 shadow-totos transition ease-in", colorVariants({ variant }), className)}>
       <div
-        className={cn(`w-full text-center font-inter text-base text-light`, {
+        className={cn(`flex w-full justify-center font-inter text-base text-light`, {
           "text-dark": variant === "light",
         })}
       >
@@ -19,7 +19,7 @@ const Button = ({ children, className, variant, ...props }: ButtonProps) => {
   );
 };
 
-const buttonVariants = cva("color", {
+const colorVariants = cva("color", {
   variants: {
     variant: {
       light: "bg-light hover:bg-white active:bg-white",

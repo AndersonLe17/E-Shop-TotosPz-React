@@ -13,7 +13,7 @@ export const Dashboard = () => {
   useEffect(() => (isExp ? remove("token") : () => {}), [isExp]);
 
   return isAuth ? (
-    <main className="flex h-screen w-screen bg-light">
+    <main className="flex w-screen bg-light">
       <Sidebar />
       <Outlet />
     </main>

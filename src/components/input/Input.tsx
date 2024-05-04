@@ -13,7 +13,7 @@ const Input = ({ label, placeholder, type, name, value, onChange }: InputProps) 
           type={type}
           value={value}
           onChange={onChange}
-          className="block w-full pt-1 font-inter text-base font-medium placeholder:font-medium focus-visible:outline-none"
+          className="block w-full pt-1 font-inter text-base font-medium text-dark placeholder:font-medium focus-visible:outline-none"
         />
       </label>
     </div>

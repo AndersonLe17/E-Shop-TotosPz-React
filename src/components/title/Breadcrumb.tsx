@@ -15,7 +15,7 @@ const Breadcrumb = ({ item, subItem }: BreadcrumbProps) => {
   return (
     <div className="flex items-center gap-1">
       <div className={cn("flex items-center gap-1", { "hover:drop-shadow-md": item })}>
-        <img src="src/assets/img/sections/Dashboard.svg" alt="base" className="size-3" />
+        <img src="/src/assets/img/sections/Dashboard.svg" alt="base" className="size-3" />
         <span className={cn("cursor-default font-inter text-sm text-dark", { "text-gray": !item }, { "cursor-pointer": item })} onClick={clickHandler}>
           Dashboard
         </span>

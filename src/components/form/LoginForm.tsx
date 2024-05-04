@@ -7,7 +7,7 @@ import { RootState } from "../../redux/store";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 
 const LoginForm = () => {
-  const { errorMsg /*isLoading*/ } = useAppSelector((state: RootState) => state.auth);
+  const { errorMsg } = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const [auth, setAuth] = useState<AuthData>({
     username: "aorellana",
