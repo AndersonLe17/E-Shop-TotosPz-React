@@ -16,5 +16,5 @@ export interface PerfilFilters {
   size?: number;
   page?: number;
   sort?: string;
-  direction?: "ASC" | "DESC";
+  direction?: string;
 }

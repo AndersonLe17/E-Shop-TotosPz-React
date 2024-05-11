@@ -3,8 +3,9 @@ import { PerfilFilters, PerfilResponse } from "./perfil.interface";
 
 export interface PerfilState {
   data: Array<PerfilResponse>;
-  pagination: Pagination | null;
+  pagination: Pagination;
   filters: PerfilFilters;
+  reqFilters: PerfilFilters;
   isLoading: boolean;
   errorMsg: string | null;
 }

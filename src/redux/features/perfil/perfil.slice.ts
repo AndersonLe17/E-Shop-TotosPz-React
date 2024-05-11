@@ -4,8 +4,28 @@ import { perfilPaginationThunk } from "../../thunk/perfil.thunk";
 
 const initialState: PerfilState = {
   data: [],
-  pagination: null,
-  filters: {},
+  pagination: {
+    totalDocs: 0,
+    totalPages: 0,
+    prevPage: 0,
+    nextPage: 0,
+    totalElements: 0,
+    numberOfElements: 0,
+    page: 0,
+    size: 0,
+    sort: "",
+    hasPrevPage: false,
+    hasNextPage: false,
+    prevLink: "",
+    nextLink: "",
+  },
+  filters: {
+    size: 10,
+    page: 0,
+    sort: "fecHorMod,DESC",
+    direction: "DESC",
+  },
+  reqFilters: {},
   isLoading: false,
   errorMsg: null,
 };
@@ -13,7 +33,11 @@ const initialState: PerfilState = {
 export const perfilSlice = createSlice({
   name: "perfil",
   initialState,
-  reducers: {},
+  reducers: {
+    changeFilters: (state, action) => {
+      state.filters = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(perfilPaginationThunk.pending, (state) => {
       return (state = { ...state, isLoading: true });
@@ -27,12 +51,21 @@ export const perfilSlice = createSlice({
           totalPages: action.payload.totalPages,
           prevPage: action.payload.prevPage,
           nextPage: action.payload.nextPage,
+          totalElements: action.payload.totalElements,
+          numberOfElements: action.payload.numberOfElements,
           page: action.payload.page,
+          size: action.payload.size,
+          sort: action.payload.sort,
           hasPrevPage: action.payload.hasPrevPage,
           hasNextPage: action.payload.hasNextPage,
           prevLink: action.payload.prevLink,
           nextLink: action.payload.nextLink,
         },
+        filters: {
+          ...state.filters,
+          direction: action.payload.sort?.split(",")[1],
+        },
+        reqFilters: action.payload.filters,
         isLoading: false,
       });
     });
@@ -42,6 +75,6 @@ export const perfilSlice = createSlice({
   },
 });
 
-export const {} = perfilSlice.actions;
+export const { changeFilters } = perfilSlice.actions;
 
 export default perfilSlice.reducer;

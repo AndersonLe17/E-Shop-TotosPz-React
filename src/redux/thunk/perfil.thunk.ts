@@ -12,7 +12,23 @@ export const perfilPaginationThunk = createAsyncThunk("perfil/pagination", async
   if (res.code === 401) {
     return rejectWithValue(res.errors[0].msg);
   }
-
-  const { data, totalDocs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink } = res;
-  return { data, totalDocs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink };
+  const { data, totalDocs, totalPages, prevPage, nextPage, totalElements, numberOfElements, page, size, hasPrevPage, hasNextPage, prevLink, nextLink, sort } =
+    res;
+  return {
+    data,
+    totalDocs,
+    totalPages,
+    prevPage,
+    nextPage,
+    totalElements,
+    numberOfElements,
+    page,
+    size,
+    hasPrevPage,
+    hasNextPage,
+    prevLink,
+    nextLink,
+    sort,
+    filters,
+  };
 });

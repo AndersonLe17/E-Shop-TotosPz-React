@@ -1,4 +1,4 @@
-import { IconPencilPlus, IconSearch } from "@tabler/icons-react";
+import { IconDotsVertical, IconPencilPlus, IconSearch } from "@tabler/icons-react";
 import { ButtonOutline } from "../../components/button";
 import { CardContent } from "../../components/card";
 import { Input, SelectCustom } from "../../components/input";
@@ -11,15 +11,33 @@ import { cn } from "../../config/clsx.config";
 import { DataTable } from "../../components/datatable";
 import { useEffect } from "react";
 import { perfilPaginationThunk } from "../../redux/thunk/perfil.thunk";
+import { changeFilters } from "../../redux/features/perfil/perfil.slice";
+import { PerfilFilters } from "../../domain/interfaces/perfil/perfil.interface";
+import { capitalizeEachWord, roleToText } from "../../utils/string.util";
+import moment from "moment";
 
 const PerfilesContent = () => {
   const { isToggle } = useAppSelector((state: RootState) => state.sidebar);
-  const { data, pagination /*isLoading*/ } = useAppSelector((state: RootState) => state.perfil);
+  const { data, pagination, filters, reqFilters, isLoading } = useAppSelector((state: RootState) => state.perfil);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(perfilPaginationThunk({}));
+    dispatch(perfilPaginationThunk(filters));
   }, []);
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeFilters({ ...filters, [e.target.name]: e.target.value == "" ? null : e.target.value }));
+  };
+  const selectHandler = (name: string, value: string) => {
+    dispatch(changeFilters({ ...filters, [name]: value === "all" ? null : value }));
+    ["page", "size", "sort"].includes(name) && searchHandler({ [name]: value });
+  };
+  const searchHandler = (tableFilter?: PerfilFilters) => {
+    if (tableFilter) {
+      if (tableFilter.size) tableFilter.page = 0;
+      dispatch(perfilPaginationThunk({ ...reqFilters, ...tableFilter }));
+    } else dispatch(perfilPaginationThunk({ ...filters, page: 0 }));
+  };
 
   return (
     <div className={cn("w-full bg-[#EFF3F3] ps-[272px] transition-all duration-700 ease-in-out", { "ps-[104px]": isToggle })}>
@@ -37,11 +55,11 @@ const PerfilesContent = () => {
             {/* Card Filters */}
             <div className="flex flex-col gap-8 md:flex-row">
               <div className="grid w-full gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                <Input label="Perfil" placeholder="Ingrese el perfil" />
-                <SelectCustom label="Estado" options={enumToOptions(Estado)} />
+                <Input label="Perfil" placeholder="Ingrese el perfil" name="perfNom" onChange={changeHandler} />
+                <SelectCustom label="Estado" options={enumToOptions(Estado)} name="perfEst" onSelected={selectHandler} />
               </div>
               <div className="flex h-fit justify-end gap-3">
-                <ButtonOutline variant="gray">
+                <ButtonOutline variant="gray" onClick={() => searchHandler()}>
                   <IconSearch size={20} />
                   Buscar
                 </ButtonOutline>
@@ -58,12 +76,49 @@ const PerfilesContent = () => {
                   { th: "Perfil", minWidth: "min-w-64" },
                   { th: "Permisos", minWidth: "min-w-80" },
                   { th: "Usuario Mod", minWidth: "min-w-36" },
-                  { th: "Fecha Mod", minWidth: "min-w-32" },
+                  { th: "Fecha Mod", minWidth: "min-w-32", order: true },
                   { th: "Estado", minWidth: "min-w-28" },
                   { th: "Acciones", minWidth: "min-w-28" },
                 ]}
                 data={data}
+                format={[
+                  {
+                    data: "perfNom",
+                    html: (data: any) => <strong className="font-semibold">{roleToText(data)}</strong>,
+                  },
+                  {
+                    data: "perfDes",
+                    html: (data: any) => <>{data}</>,
+                  },
+                  {
+                    data: "usuMod",
+                    html: (data: any) => <strong className="font-semibold">{data.usuNom}</strong>,
+                  },
+                  {
+                    data: "fecHorMod",
+                    html: (data: any) => (
+                      <>
+                        <strong className="font-semibold">{moment(data).format("DD MMMM YYYY")}</strong>
+                        <p className="text-sm">{moment(data).format("h:mm:ss A")}</p>
+                      </>
+                    ),
+                  },
+                  {
+                    data: "perfEst",
+                    html: (data: any) => <span className="rounded-lg bg-success px-3 py-[2px] text-sm text-light">{capitalizeEachWord(data)}</span>,
+                  },
+                  {
+                    data: "perfCod",
+                    html: (data: any) => (
+                      <button data-id={data}>
+                        <IconDotsVertical />
+                      </button>
+                    ),
+                  },
+                ]}
                 pagination={pagination!}
+                onChangePagination={selectHandler}
+                isLoading={isLoading}
               />
             </div>
           </div>
