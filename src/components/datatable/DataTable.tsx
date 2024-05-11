@@ -9,16 +9,13 @@ import { Pagination as PaginationInt } from "../../domain/interfaces/pagination/
 interface DataTableProps {
   headers: Array<{ minWidth: string; th: string; order?: boolean }>;
   data: Array<any>;
-  format: Array<{
-    data: string;
-    html: (data: any) => JSX.Element;
-  }>;
+  formats: Array<(data: any) => JSX.Element | undefined>;
   pagination: PaginationInt;
   isLoading?: boolean;
   onChangePagination?: (name: string, value: string) => void;
 }
 
-const DataTable = ({ headers, data, format, pagination, isLoading = true, onChangePagination }: DataTableProps) => {
+const DataTable = ({ headers, data, formats, pagination, isLoading = true, onChangePagination }: DataTableProps) => {
   return (
     <>
       <div className="flex justify-between">
@@ -73,9 +70,9 @@ const DataTable = ({ headers, data, format, pagination, isLoading = true, onChan
                 ))}
             {data.map((item, index) => (
               <tr key={index} className="border-b-[1px] border-gray">
-                {format.map((f, idx) => (
+                {formats.map((format, idx) => (
                   <td key={index + "-" + idx} className="p-3">
-                    {f.html(item[f.data])}
+                    {format && format(item)}
                   </td>
                 ))}
               </tr>

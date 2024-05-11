@@ -6,11 +6,10 @@ import { useCookies } from "react-cookie";
 import { Sidebar } from "../components/sidebar";
 
 export const Dashboard = () => {
-  const [, setCookie, remove] = useCookies();
-  const { isAuth, token, isExp } = useAppSelector((state: RootState) => state.auth);
+  const [, setCookie] = useCookies();
+  const { isAuth, token } = useAppSelector((state: RootState) => state.auth);
 
   useEffect(() => (token ? setCookie("token", token, { path: "/" }) : () => {}), [token]);
-  useEffect(() => (isExp ? remove("token") : () => {}), [isExp]);
 
   return isAuth ? (
     <main className="flex w-screen bg-light">

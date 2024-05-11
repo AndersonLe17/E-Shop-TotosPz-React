@@ -12,7 +12,7 @@ import { DataTable } from "../../components/datatable";
 import { useEffect } from "react";
 import { perfilPaginationThunk } from "../../redux/thunk/perfil.thunk";
 import { changeFilters } from "../../redux/features/perfil/perfil.slice";
-import { PerfilFilters } from "../../domain/interfaces/perfil/perfil.interface";
+import { PerfilFilters, PerfilResponse } from "../../domain/interfaces/perfil/perfil.interface";
 import { capitalizeEachWord, roleToText } from "../../utils/string.util";
 import moment from "moment";
 
@@ -81,40 +81,22 @@ const PerfilesContent = () => {
                   { th: "Acciones", minWidth: "min-w-28" },
                 ]}
                 data={data}
-                format={[
-                  {
-                    data: "perfNom",
-                    html: (data: any) => <strong className="font-semibold">{roleToText(data)}</strong>,
-                  },
-                  {
-                    data: "perfDes",
-                    html: (data: any) => <>{data}</>,
-                  },
-                  {
-                    data: "usuMod",
-                    html: (data: any) => <strong className="font-semibold">{data.usuNom}</strong>,
-                  },
-                  {
-                    data: "fecHorMod",
-                    html: (data: any) => (
-                      <>
-                        <strong className="font-semibold">{moment(data).format("DD MMMM YYYY")}</strong>
-                        <p className="text-sm">{moment(data).format("h:mm:ss A")}</p>
-                      </>
-                    ),
-                  },
-                  {
-                    data: "perfEst",
-                    html: (data: any) => <span className="rounded-lg bg-success px-3 py-[2px] text-sm text-light">{capitalizeEachWord(data)}</span>,
-                  },
-                  {
-                    data: "perfCod",
-                    html: (data: any) => (
-                      <button data-id={data}>
-                        <IconDotsVertical />
-                      </button>
-                    ),
-                  },
+                formats={[
+                  (data: PerfilResponse) => <strong className="font-semibold">{roleToText(data.perfNom)}</strong>,
+                  (data: PerfilResponse) => <>{data.perfDes}</>,
+                  (data: PerfilResponse) => <strong className="font-semibold">{data.usuMod.usuNom}</strong>,
+                  (data: PerfilResponse) => (
+                    <>
+                      <strong className="font-semibold">{moment(data.fecHorMod).format("DD MMMM YYYY")}</strong>
+                      <p className="text-sm">{moment(data.fecHorMod).format("h:mm:ss A")}</p>
+                    </>
+                  ),
+                  (data: PerfilResponse) => <span className="rounded-lg bg-success px-3 py-[2px] text-sm text-light">{capitalizeEachWord(data.perfEst)}</span>,
+                  (data: PerfilResponse) => (
+                    <button data-id={data.perfCod}>
+                      <IconDotsVertical />
+                    </button>
+                  ),
                 ]}
                 pagination={pagination!}
                 onChangePagination={selectHandler}

@@ -7,7 +7,7 @@ export const capitalizeEachWord = (text: string): string => {
     .join(" ");
 };
 
-export const roleToText = (role: RoleEnum): string => {
+export const roleToText = (role: RoleEnum | string): string => {
   return role
     .split("_")
     .slice(1)
