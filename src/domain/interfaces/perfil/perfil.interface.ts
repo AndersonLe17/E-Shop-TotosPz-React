@@ -5,6 +5,7 @@ export interface PerfilResponse {
   perfCod: number;
   perfNom: string;
   perfDes: string;
+  perfDet: string;
   perfEst: Estado;
   usuMod: Auditoria;
   fecHorMod: Date;

@@ -82,8 +82,13 @@ const PerfilesContent = () => {
                 ]}
                 data={data}
                 formats={[
-                  (data: PerfilResponse) => <strong className="font-semibold">{roleToText(data.perfNom)}</strong>,
-                  (data: PerfilResponse) => <>{data.perfDes}</>,
+                  (data: PerfilResponse) => (
+                    <>
+                      <strong className="font-semibold">{roleToText(data.perfNom)}</strong>
+                      <p className="text-sm">{data.perfDes}</p>
+                    </>
+                  ),
+                  (data: PerfilResponse) => <>{data.perfDet}</>,
                   (data: PerfilResponse) => <strong className="font-semibold">{data.usuMod.usuNom}</strong>,
                   (data: PerfilResponse) => (
                     <>
