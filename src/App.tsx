@@ -1,10 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
-import DashboardContent from "./pages/content/DashboardContent";
-import PerfilesContent from "./pages/content/PerfilesContent";
-import UsuariosContent from "./pages/content/UsuariosContent";
-import SedesContent from "./pages/content/SedesContent";
+import DashboardContent from "./pages/content/dashboard/DashboardContent";
+import PerfilesContent from "./pages/content/perfiles/PerfilesContent";
+import UsuariosContent from "./pages/content/usuarios/UsuariosContent";
+import SedesContent from "./pages/content/sedes/SedesContent";
 
 export const App = () => {
   return (

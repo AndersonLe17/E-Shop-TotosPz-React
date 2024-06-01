@@ -1,4 +1,4 @@
-import { SelectOption } from "../domain/interfaces/select/option.interface";
+import { SelectOption } from "../domain/interfaces/input/option.interface";
 
 export const paginationOptions: Array<SelectOption> = [
   { value: "10", label: "10" },

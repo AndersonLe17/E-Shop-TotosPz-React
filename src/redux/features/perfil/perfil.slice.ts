@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PerfilState } from "../../../domain/interfaces/perfil/perfil.state";
-import { perfilPaginationThunk } from "../../thunk/perfil.thunk";
+import { perfilCreateThunk, perfilPaginationThunk } from "../../thunk/perfil.thunk";
 
 const initialState: PerfilState = {
   data: [],
@@ -27,7 +27,7 @@ const initialState: PerfilState = {
   },
   reqFilters: {},
   isLoading: false,
-  errorMsg: null,
+  errors: null,
 };
 
 export const perfilSlice = createSlice({
@@ -39,6 +39,7 @@ export const perfilSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // Pagination Reducers
     builder.addCase(perfilPaginationThunk.pending, (state) => {
       return (state = { ...state, isLoading: true });
     });
@@ -70,7 +71,17 @@ export const perfilSlice = createSlice({
       });
     });
     builder.addCase(perfilPaginationThunk.rejected, (state, action) => {
-      return (state = { ...state, isLoading: false, errorMsg: action.payload as string });
+      return (state = { ...state, isLoading: false, errors: action.payload as Array<{ error: string; msg: string }> });
+    });
+    // Create Reducers
+    builder.addCase(perfilCreateThunk.pending, (state) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilCreateThunk.fulfilled, (state, _action) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilCreateThunk.rejected, (state, action) => {
+      return (state = { ...state, errors: action.payload as Array<{ error: string; msg: string }> });
     });
   },
 });

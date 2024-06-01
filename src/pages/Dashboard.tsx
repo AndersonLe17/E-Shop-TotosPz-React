@@ -4,6 +4,7 @@ import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Sidebar } from "../components/sidebar";
+import { ToastContainer } from "react-toastify";
 
 export const Dashboard = () => {
   const [, setCookie] = useCookies();
@@ -12,9 +13,10 @@ export const Dashboard = () => {
   useEffect(() => (token ? setCookie("token", token, { path: "/" }) : () => {}), [token]);
 
   return isAuth ? (
-    <main className="flex w-screen bg-light">
+    <main className="flex h-full bg-light">
       <Sidebar />
       <Outlet />
+      <ToastContainer />
     </main>
   ) : (
     <Navigate to={"/login"} replace />

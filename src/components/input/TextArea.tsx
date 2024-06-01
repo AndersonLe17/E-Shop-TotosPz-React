@@ -3,32 +3,29 @@ import { cn } from "../../config/clsx.config";
 import { validHandler, validStates } from "../../utils/validation.util";
 import { AttrValidation } from "../../domain/interfaces/input/valid.interface";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
-  attr?: AttrValidation;
+  attr: AttrValidation;
   trim?: boolean;
 }
 
-const Input = ({ label, attr, trim, className, ...props }: InputProps) => {
+const TextArea = ({ label, attr, trim, className, ...props }: TextAreaProps) => {
   const [msg, setMsg] = useState<string>();
 
-  const onInvalidHandler = (e: React.InvalidEvent<HTMLInputElement>) => {
+  const onInvalidHandler = (e: React.InvalidEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
-    validStates.forEach((valid) => e.target.validity[valid] && setMsg(validHandler(e, valid, attr!)));
+    validStates.forEach((valid) => e.target.validity[valid] && setMsg(validHandler(e, valid, attr)));
   };
 
   return (
     <div className={cn("flex", className)}>
       <label className="block w-full rounded-lg bg-white px-3 py-[6px] font-inter text-[11px] font-semibold uppercase">
         {label}
-        <input
+        <textarea
           {...props}
           onInvalid={onInvalidHandler}
           onFocus={() => setMsg(undefined)}
-          onBlur={(e) => {
-            if (trim && e.target.value !== e.target.value.trim()) e.target.setCustomValidity("valueBlank");
-            else e.target.setCustomValidity("");
-          }}
+          onBlur={(e) => (trim && e.target.value !== e.target.value.trim() ? e.target.setCustomValidity("valueBlank") : e.target.setCustomValidity(""))}
           className="block w-full pt-1 font-inter text-base font-medium text-dark placeholder:font-medium focus-visible:outline-none"
         />
       </label>
@@ -39,4 +36,4 @@ const Input = ({ label, attr, trim, className, ...props }: InputProps) => {
   );
 };
 
-export default Input;
+export default TextArea;

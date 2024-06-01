@@ -1,7 +1,7 @@
-import { Title } from "../../components/title";
-import { cn } from "../../config/clsx.config";
-import { useAppSelector } from "../../redux/hook";
-import { RootState } from "../../redux/store";
+import { Title } from "../../../components/title";
+import { cn } from "../../../config/clsx.config";
+import { useAppSelector } from "../../../redux/hook";
+import { RootState } from "../../../redux/store";
 
 const DashboardContent = () => {
   const { isToggle } = useAppSelector((state: RootState) => state.sidebar);

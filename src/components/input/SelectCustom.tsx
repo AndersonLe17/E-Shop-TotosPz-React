@@ -1,5 +1,5 @@
 import Select from "react-select";
-import { SelectOption } from "../../domain/interfaces/select/option.interface";
+import { SelectOption } from "../../domain/interfaces/input/option.interface";
 import { selectStyle } from "../../domain/style/select.style";
 import { defaultOption } from "../../utils/enum.util";
 import { cn } from "../../config/clsx.config";

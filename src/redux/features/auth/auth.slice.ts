@@ -21,17 +21,12 @@ const initialState: AuthState = {
       : null,
   token: getCookie("token") !== undefined ? getCookie("token")! : null,
   isExp: getCookie("token") !== undefined ? expirationTokenAuth(getCookie("token")!) : false,
-  modalLogout: false,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    logoutConfirmation: (state) => {
-      state.modalLogout = !state.modalLogout;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(authLoginThunk.pending, (state) => {
       return (state = { ...initialState, isLoading: true });
@@ -56,14 +51,12 @@ export const authSlice = createSlice({
       return (state = { ...initialState, errorMsg: action.payload as string });
     });
     builder.addCase(authLogoutThunk.pending, (state) => {
-      return (state = { ...initialState, isAuth: false, userData: null, token: null, isExp: true, isLoading: true, modalLogout: false });
+      return (state = { ...initialState, isAuth: false, userData: null, token: null, isExp: true, isLoading: true });
     });
     builder.addCase(authLogoutThunk.fulfilled, (state) => {
       return (state = { ...initialState, isLoading: false });
     });
   },
 });
-
-export const { logoutConfirmation } = authSlice.actions;
 
 export default authSlice.reducer;

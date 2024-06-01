@@ -1,22 +1,20 @@
 import { IconDoorExit } from "@tabler/icons-react";
 import { capitalizeEachWord, roleToText } from "../../utils/string.util";
-import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { useAppSelector } from "../../redux/hook";
 import { RootState } from "../../redux/store";
-import { logoutConfirmation } from "../../redux/features/auth/auth.slice";
 import { cn } from "../../config/clsx.config";
 import { useState } from "react";
 
 interface ProfileSidebarProps {
   toggle: boolean;
+  onOpen: () => void;
 }
 
-export const ProfileSideBar = ({ toggle }: ProfileSidebarProps) => {
+export const ProfileSideBar = ({ toggle, onOpen }: ProfileSidebarProps) => {
   const { userData } = useAppSelector((state: RootState) => state.auth);
-  const dispatch = useAppDispatch();
   const [active, setActive] = useState(false);
   const { usuNom, usuPerNom, usuPerf } = userData!;
 
-  const handleLogout = () => dispatch(logoutConfirmation());
   const handleMouseOver = () => setActive(true);
   const handleMouseLeave = () => setActive(false);
 
@@ -33,11 +31,11 @@ export const ProfileSideBar = ({ toggle }: ProfileSidebarProps) => {
           <span className="font-inter text-sm font-medium text-[#495057]">{roleToText(usuPerf)}</span>
         </div>
         <div className={cn({ hidden: toggle })}>
-          <IconDoorExit size={22} onClick={handleLogout} className="cursor-pointer text-gray-900 hover:text-dark" />
+          <IconDoorExit size={22} onClick={onOpen} className="cursor-pointer text-gray-900 hover:text-dark" />
         </div>
       </div>
       {toggle && (
-        <div className={cn("animate-growin relative", { hidden: !active })} onMouseLeave={handleMouseLeave}>
+        <div className={cn("relative animate-growin", { hidden: !active })} onMouseLeave={handleMouseLeave}>
           <div className="absolute -bottom-1 left-20 w-72 rounded-lg bg-white p-2 shadow-totos">
             <div className="flex flex-row items-center gap-x-2">
               <div className="mx-auto">
@@ -50,7 +48,7 @@ export const ProfileSideBar = ({ toggle }: ProfileSidebarProps) => {
                 <span className="font-inter text-sm font-medium text-[#495057]">{roleToText(usuPerf)}</span>
               </div>
               <div>
-                <IconDoorExit size={22} onClick={handleLogout} className="cursor-pointer text-gray-900 hover:text-dark" />
+                <IconDoorExit size={22} onClick={onOpen} className="cursor-pointer text-gray-900 hover:text-dark" />
               </div>
             </div>
           </div>

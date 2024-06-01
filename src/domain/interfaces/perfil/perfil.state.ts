@@ -7,5 +7,5 @@ export interface PerfilState {
   filters: PerfilFilters;
   reqFilters: PerfilFilters;
   isLoading: boolean;
-  errorMsg: string | null;
+  errors: Array<{ error: string; msg: string }> | null;
 }

@@ -4,23 +4,25 @@ import { IconCaretLeftFilled, IconCaretRightFilled, IconDirectionHorizontal } fr
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { RootState } from "../../redux/store";
 import { ProfileSideBar } from "./ProfileSidebar";
-import { ModalLogout } from "../modal";
 import { cn } from "../../config/clsx.config";
 import { toggleSidebar } from "../../redux/features/sidebar/sidebar.slice";
+import { useState } from "react";
+import ModalLogout from "../../pages/content/ModalLogout";
 
 interface SidebarProps {}
 
 const Sidebar = ({}: SidebarProps) => {
-  const { userData, modalLogout } = useAppSelector((state: RootState) => state.auth);
+  const { userData } = useAppSelector((state: RootState) => state.auth);
   const { isToggle } = useAppSelector((state: RootState) => state.sidebar);
   const dispatch = useAppDispatch();
   const { usuPerf } = userData!;
 
+  const [openModal, setOpenModal] = useState(false);
   const toggleHandler = () => dispatch(toggleSidebar());
 
   return (
     <>
-      <div className="relative z-10 h-screen">
+      <div className="z-10 h-screen">
         <div
           className={cn("fixed flex h-full w-[272px] flex-col rounded-e-2xl border-r border-gray-300 bg-light transition-all duration-700 ease-in-out", {
             "w-[104px]": isToggle,
@@ -55,12 +57,11 @@ const Sidebar = ({}: SidebarProps) => {
             </div>
           </nav>
           <div className="px-4 py-5">
-            <ProfileSideBar toggle={isToggle} />
+            <ProfileSideBar toggle={isToggle} onOpen={() => setOpenModal(true)} />
           </div>
         </div>
       </div>
-
-      {modalLogout && <ModalLogout />}
+      <ModalLogout open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 };

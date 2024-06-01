@@ -13,5 +13,4 @@ export interface AuthState {
   } | null;
   token: string | null;
   isExp: boolean;
-  modalLogout: boolean;
 }

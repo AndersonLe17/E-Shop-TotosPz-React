@@ -1,6 +1,14 @@
 import { Estado } from "../../enums/estado.enum";
 import { Auditoria } from "../audit/auditoria.interface";
 
+export interface Perfil {
+  perfCod?: number;
+  perfNom: string;
+  perfDes: string;
+  perfDet: string;
+  perfEst?: Estado;
+}
+
 export interface PerfilResponse {
   perfCod: number;
   perfNom: string;
