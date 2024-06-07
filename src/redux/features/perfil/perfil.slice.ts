@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PerfilState } from "../../../domain/interfaces/perfil/perfil.state";
-import { perfilCreateThunk, perfilPaginationThunk } from "../../thunk/perfil.thunk";
+import { perfilChangeStatusThunk, perfilCreateThunk, perfilFindByCodThunk, perfilPaginationThunk, perfilUpdateThunk } from "../../thunk/perfil.thunk";
+import { roleToText } from "../../../utils/string.util";
 
 const initialState: PerfilState = {
   data: [],
@@ -19,6 +20,12 @@ const initialState: PerfilState = {
     prevLink: "",
     nextLink: "",
   },
+  perfData: {
+    perfCod: undefined,
+    perfNom: "",
+    perfDes: "",
+    perfDet: "",
+  },
   filters: {
     size: 10,
     page: 0,
@@ -36,6 +43,9 @@ export const perfilSlice = createSlice({
   reducers: {
     changeFilters: (state, action) => {
       state.filters = action.payload;
+    },
+    changeInitPerfData: (state) => {
+      state.perfData = { perfCod: undefined, perfNom: "", perfDes: "", perfDet: "" };
     },
   },
   extraReducers: (builder) => {
@@ -83,9 +93,40 @@ export const perfilSlice = createSlice({
     builder.addCase(perfilCreateThunk.rejected, (state, action) => {
       return (state = { ...state, errors: action.payload as Array<{ error: string; msg: string }> });
     });
+    // Find By Cod Reducers
+    builder.addCase(perfilFindByCodThunk.pending, (state) => {
+      return (state = { ...state, isLoading: true });
+    });
+    builder.addCase(perfilFindByCodThunk.fulfilled, (state, action) => {
+      return (state = { ...state, perfData: { ...action.payload, perfNom: roleToText(action.payload.perfNom) }, isLoading: false });
+    });
+    builder.addCase(perfilFindByCodThunk.rejected, (state, action) => {
+      return (state = { ...state, isLoading: false, errors: action.payload as Array<{ error: string; msg: string }> });
+    });
+    // Update Reducers
+    builder.addCase(perfilUpdateThunk.pending, (state) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilUpdateThunk.fulfilled, (state, _action) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilUpdateThunk.rejected, (state, action) => {
+      return (state = { ...state, errors: action.payload as Array<{ error: string; msg: string }> });
+    });
+    // Change Status Reducers
+    builder.addCase(perfilChangeStatusThunk.pending, (state) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilChangeStatusThunk.fulfilled, (state, _action) => {
+      return (state = { ...state, errors: null });
+    });
+    builder.addCase(perfilChangeStatusThunk.rejected, (state, action) => {
+      return (state = { ...state, errors: action.payload as Array<{ error: string; msg: string }> });
+    });
+    
   },
 });
 
-export const { changeFilters } = perfilSlice.actions;
+export const { changeFilters, changeInitPerfData } = perfilSlice.actions;
 
 export default perfilSlice.reducer;

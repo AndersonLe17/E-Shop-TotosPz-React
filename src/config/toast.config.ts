@@ -20,7 +20,7 @@ const toastMessage = (type: ToastTypeEnum) => {
     case ToastTypeEnum.MODIFIED:
       return "Modificación exitosa";
     case ToastTypeEnum.DELETED:
-      return "Eliminación exitosa";
+      return "Inactivación exitosa";
     case ToastTypeEnum.ALERT:
       return "Alerta";
   }

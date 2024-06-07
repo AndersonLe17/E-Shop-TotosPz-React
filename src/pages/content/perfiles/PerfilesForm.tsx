@@ -4,25 +4,28 @@ import { cn } from "../../../config/clsx.config";
 import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { RootState } from "../../../redux/store";
 import { Perfil } from "../../../domain/interfaces/perfil/perfil.interface";
-import { perfilCreateThunk, perfilPaginationThunk } from "../../../redux/thunk/perfil.thunk";
+import { perfilCreateThunk, perfilPaginationThunk, perfilUpdateThunk } from "../../../redux/thunk/perfil.thunk";
 import { InputPlaceholder } from "../../../components/placeholder";
 
-interface PerfilesForm {
+interface PerfilesFormProps {
   changeHandler: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   modalClose: () => void;
   open: boolean;
   perfil: Perfil;
+  mode?: string;
 }
 
-const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm) => {
+const PerfilesForm = ({ changeHandler, open, modalClose, perfil, mode }: PerfilesFormProps) => {
   const dispatch = useAppDispatch();
-  const { reqFilters, errors } = useAppSelector((state: RootState) => state.perfil);
+  const { reqFilters, errors, isLoading } = useAppSelector((state: RootState) => state.perfil);
 
-  const { perfNom, perfDes, perfDet } = perfil;
+  const { perfCod, perfNom, perfDes, perfDet } = perfil;
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = await dispatch(perfilCreateThunk(perfil));
+    if (mode === "view") return;
+
+    const res = await dispatch(mode ? perfilUpdateThunk(perfil) : perfilCreateThunk(perfil));
     if (res.meta.requestStatus === "fulfilled") {
       modalClose();
       dispatch(perfilPaginationThunk(reqFilters));
@@ -35,9 +38,16 @@ const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm)
           "mt-1 rounded bg-danger px-2 py-1": errors && errors.filter((e) => e.error === "Business Validation").length > 0,
         })}
       >
-        {errors && errors.filter((e) => e.error === "Business Validation").map((e) => <p className="font-inter text-sm font-semibold text-light">{e.msg}</p>)}
+        {errors &&
+          errors
+            .filter((e) => e.error === "Business Validation")
+            .map((e, idx) => (
+              <p key={idx} className="font-inter text-sm font-semibold text-light">
+                {e.msg}
+              </p>
+            ))}
       </div>
-      {!open ? (
+      {!open || isLoading ? (
         <div className="grid w-full gap-3 md:grid-cols-4 2xl:grid-cols-6">
           <InputPlaceholder className="md:col-span-2 2xl:col-span-3" />
           <InputPlaceholder className="md:col-span-2 2xl:col-span-3" />
@@ -47,6 +57,7 @@ const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm)
         </div>
       ) : (
         <div className="grid w-full gap-3 md:grid-cols-4 2xl:grid-cols-6">
+          {perfCod && <input type="hidden" value={perfCod} name="perfCod" required />}
           <Input
             label="Perfil"
             attr={{ val: "nombre", prep: "del", ctx: "perfil" }}
@@ -58,6 +69,7 @@ const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm)
             maxLength={25}
             trim
             required
+            readOnly={mode === "view"}
             className="flex-col md:col-span-2 2xl:col-span-3"
           />
           <Input
@@ -71,6 +83,7 @@ const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm)
             maxLength={128}
             trim={true}
             required
+            readOnly={mode === "view"}
             className="flex-col md:col-span-2 2xl:col-span-3"
           />
           <TextArea
@@ -85,17 +98,20 @@ const PerfilesForm = ({ changeHandler, open, modalClose, perfil }: PerfilesForm)
             maxLength={512}
             trim={true}
             required
+            readOnly={mode === "view"}
             className="col-span-full flex-col"
           />
         </div>
       )}
       <div className="flex justify-end gap-x-3">
         <Button variant="danger" type="button" onClick={modalClose}>
-          Cancelar
+          {mode != "view" ? "Cancelar" : "Cerrar"}
         </Button>
-        <Button variant="success" type="submit">
-          Guardar
-        </Button>
+        {mode !== "view" && (
+          <Button variant="success" type="submit">
+            Guardar
+          </Button>
+        )}
       </div>
     </form>
   );

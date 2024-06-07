@@ -13,9 +13,10 @@ interface DataTableProps {
   pagination: PaginationInt;
   isLoading?: boolean;
   onChangePagination?: (name: string, value: string) => void;
+  onExportData?: () => void;
 }
 
-const DataTable = ({ headers, data, formats, pagination, isLoading = true, onChangePagination }: DataTableProps) => {
+const DataTable = ({ headers, data, formats, pagination, isLoading = true, onChangePagination, onExportData }: DataTableProps) => {
   return (
     <>
       <div className="flex justify-between">
@@ -27,7 +28,7 @@ const DataTable = ({ headers, data, formats, pagination, isLoading = true, onCha
           onSelected={onChangePagination}
           className="w-28"
         />
-        <ButtonOutline variant="dark" className="h-fit">
+        <ButtonOutline variant="dark" onClick={onExportData} className="h-fit">
           <IconFileExport size={20} />
           Exportar
         </ButtonOutline>

@@ -4,9 +4,10 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hook";
 import { RootState } from "../../../redux/store";
 import { cn } from "../../../config/clsx.config";
 import { useEffect, useState } from "react";
-import { perfilPaginationThunk } from "../../../redux/thunk/perfil.thunk";
+import { perfilChangeStatusThunk, perfilFindByCodThunk, perfilPaginationThunk } from "../../../redux/thunk/perfil.thunk";
 import { changeFilters } from "../../../redux/features/perfil/perfil.slice";
 import { PerfilFilters } from "../../../domain/interfaces/perfil/perfil.interface";
+import { AlertModal } from "../../../components/modal";
 import PerfilesFilters from "./PerfilesFilters";
 import PerfilesTable from "./PerfilesTable";
 import PerfilesModal from "./PerfilesModal";
@@ -16,15 +17,32 @@ const PerfilesContent = () => {
   const { filters, reqFilters } = useAppSelector((state: RootState) => state.perfil);
   const dispatch = useAppDispatch();
 
-  const [openModal, setOpenModal] = useState(false)
+  const [openFormModal, setOpenFormModal] = useState(false);
+  const [openAlertModal, setOpenAlertModal] = useState(false);
+  const [modeModal, setModeModal] = useState<string | undefined>(undefined);
+  const [regCod, setRegCod] = useState<number | undefined>(undefined);
+
   useEffect(() => {
     dispatch(perfilPaginationThunk(filters));
   }, []);
+
+  const formModalHandler = (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    const id = e.currentTarget.dataset.id;
+    id && dispatch(perfilFindByCodThunk(parseInt(id)));
+    setModeModal(e.currentTarget.dataset.mode);
+    setOpenFormModal(true);
+  };
+
+  const alertModalHandler = async (e: React.MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    setRegCod(parseInt(e.currentTarget.dataset.id!));
+    setOpenAlertModal(true);
+  };
 
   const selectHandler = (name: string, value: string) => {
     dispatch(changeFilters({ ...filters, [name]: value === "all" ? null : value }));
     ["page", "size", "sort"].includes(name) && searchHandler({ [name]: value });
   };
+
   const searchHandler = (tableFilter?: PerfilFilters) => {
     if (tableFilter) {
       if (tableFilter.size) tableFilter.page = 0;
@@ -45,13 +63,24 @@ const PerfilesContent = () => {
             </div>
             {/* Card Body */}
             <div className="flex flex-col gap-3">
-              <PerfilesFilters selectHandler={selectHandler} searchHandler={searchHandler} modalHandler={() => setOpenModal(true)} />
-              <PerfilesTable selectHandler={selectHandler} />
+              <PerfilesFilters selectHandler={selectHandler} searchHandler={searchHandler} modalHandler={formModalHandler} />
+              <PerfilesTable selectHandler={selectHandler} actionHandler={formModalHandler} altActionHandler={alertModalHandler} />
             </div>
           </CardContent>
         </div>
       </div>
-      <PerfilesModal open={openModal} onClose={() => setOpenModal(false)} />
+      <PerfilesModal open={openFormModal} onClose={() => setOpenFormModal(false)} mode={modeModal} />
+      <AlertModal
+        open={openAlertModal}
+        onClose={() => setOpenAlertModal(false)}
+        onConfirm={async () => {
+          await dispatch(perfilChangeStatusThunk(regCod!));
+          await dispatch(perfilPaginationThunk(reqFilters));
+          setOpenAlertModal(false);
+          setRegCod(undefined);
+        }}
+        message="¿Esta seguro de cambiar el estado del registro?"
+      />
     </>
   );
 };

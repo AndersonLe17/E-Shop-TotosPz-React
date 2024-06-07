@@ -54,7 +54,7 @@ export const NavItem = ({ navData, role, toggle }: NavItemProps) => {
           (path === activeNav ? <IconCaretUpFilled className="text-gray-900" size={20} /> : <IconCaretDownFilled className="text-gray-900" size={20} />)}
       </div>
       {subNav && (
-        <div className={cn("pt-1", { "animate-slice": !toggle, hidden: path !== activeNav, "animate-growin relative pt-0": toggle })}>
+        <div className={cn("pt-1", { "animate-slice": !toggle, hidden: path !== activeNav, "relative animate-growin pt-0": toggle })}>
           <div
             className={cn("flex flex-row ps-3", {
               "absolute -bottom-7 left-24 w-36 rounded-lg bg-white p-2 shadow-totos": toggle,

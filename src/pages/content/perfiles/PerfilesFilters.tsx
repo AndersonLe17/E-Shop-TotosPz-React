@@ -11,7 +11,7 @@ import { changeFilters } from "../../../redux/features/perfil/perfil.slice";
 interface PerfilesFiltersProps {
   selectHandler: (name: string, value: string) => void;
   searchHandler: (tableFilter?: PerfilFilters) => void;
-  modalHandler: () => void;
+  modalHandler: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const PerfilesFilters = ({ selectHandler, searchHandler, modalHandler }: PerfilesFiltersProps) => {

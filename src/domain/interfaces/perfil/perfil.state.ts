@@ -1,9 +1,10 @@
 import { Pagination } from "../pagination/pagination.interface";
-import { PerfilFilters, PerfilResponse } from "./perfil.interface";
+import { Perfil, PerfilFilters, PerfilResponse } from "./perfil.interface";
 
 export interface PerfilState {
   data: Array<PerfilResponse>;
   pagination: Pagination;
+  perfData: Perfil;
   filters: PerfilFilters;
   reqFilters: PerfilFilters;
   isLoading: boolean;
